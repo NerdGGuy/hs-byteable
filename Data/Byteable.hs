@@ -1,3 +1,4 @@
+{-# LANGUAGE FlexibleInstances #-}
 -- |
 -- Module      : Data.Byteable
 -- License     : BSD-style
@@ -15,7 +16,7 @@ import Foreign.ForeignPtr (withForeignPtr)
 import Data.ByteString (ByteString)
 import Data.List (foldl')
 import Data.Word (Word8)
-import qualified Data.ByteString as B (length, zipWith)
+import qualified Data.ByteString as B (length, zipWith, concat)
 import qualified Data.ByteString.Internal as B (toForeignPtr)
 
 -- | Class of things that can generate sequence of bytes
@@ -34,6 +35,9 @@ class Byteable a where
 
 instance Byteable ByteString where
     toBytes bs = bs
+
+instance Byteable [ByteString] where
+    toBytes bsl = B.concat bsl
 
 -- | A constant time equality test for 2 byteable objects.
 --
